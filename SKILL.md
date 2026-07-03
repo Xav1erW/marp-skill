@@ -5,8 +5,11 @@ description: "Convert content to Marp slideshows with Awesome Marp templates. Us
 
 # Marp Skill
 
-Convert content to beautiful Marp slideshows using the Awesome Marp template system.
+Convert content to beautiful Marp slideshows using the bundled Awesome Marp template system.
 **Agent controls every page** via structured JSON input.
+
+The skill ships its themes, theme images, and VS Code configuration. When the builder is
+given an output path, it copies these assets beside the generated deck automatically.
 
 ---
 
@@ -20,7 +23,7 @@ Agent → Page JSON Array → build_slides.py → Marp Markdown
 |-------|---------------|
 | `scripts/build_slides.py` | Template stitching, JSON rendering |
 | **Agent** | **Page planning, layout selection, content filling** |
-| Output | Complete Marp slideshow |
+| Output | Complete Marp slideshow plus local theme assets |
 
 ---
 
@@ -31,7 +34,7 @@ Agent → Page JSON Array → build_slides.py → Marp Markdown
 - Marp comments like `<!-- _class:xxx -->` or `<!-- footer:xxx -->`
 - Any template-specific directives
 
-All template selection and formatting is handled by JSON fields. Put slide titles in `page_title`; put only body content in `content`, `left_content`, `right_content`, etc. Body content may contain paragraphs, bullets, math, images, and emphasis, but must not contain Markdown title headers or template directives.
+All template selection and formatting is handled by JSON fields. Put slide titles in `page_title`; put only body content in `content`, `left_content`, `right_content`, etc. Body content may contain paragraphs, bullets, math, images, emphasis, and raw HTML layout components, but must not contain Markdown title headers or template directives.
 
 **Agent generates slides by passing JSON to the build script:**
 
@@ -49,6 +52,9 @@ Or use a JSON file:
 ```bash
 python scripts/build_slides.py --pages-file pages.json --output slides.md
 ```
+
+Both commands also create or update `themes/`, `images/`, and `.vscode/settings.json` in the
+output directory. Keep this structure intact because templates use relative image paths.
 
 ---
 
@@ -115,6 +121,27 @@ Quote / insight → bq-blue
 Step-by-step → cols2_ol_sq
 Key takeaway → bq-green
 ```
+
+Prefer the enhanced `am_blue` theme for research and technical presentations. It provides
+card surfaces, clearer title hierarchy, polished tables and quotes, and specialized HTML
+components. Use custom HTML only when standard templates cannot express the relationship
+clearly. Keep all tags balanced; the bundled VS Code settings enable Marp HTML rendering.
+
+### Enhanced `am_blue` components
+
+These classes can be placed in a template content field as raw HTML:
+
+| Component | Purpose | Main classes |
+|-----------|---------|--------------|
+| Content card | General text, figure, dense, system, or summary panel | `content-card` plus `figure-card`, `dense-card`, `system-card`, or `summary-card` |
+| Active-perception comparison | Two concepts connected by a full-width conclusion | `active-perception-grid`, `active-card`, `active-bridge` |
+| VLM overview | Three-stage model pipeline, training phases, and takeaway | `vlm-overview`, `vlm-pipeline`, `vlm-stage`, `vlm-training-grid`, `vlm-overview-note` |
+| Alignment gap | Established methods beside open questions | `alignment-gap`, `alignment-left`, `alignment-right`, `alignment-question`, `alignment-conclusion` |
+| Research-question path | WHERE → WHEN → HOW progression | `ap-question-map`, `ap-question-path`, `ap-question-item`, `ap-question-foot` |
+
+Use these as complete structures copied from a validated deck or assembled with short text.
+Do not rename inner classes: layout depends on exact nesting. Pipeline components are tuned
+for three stages on a 16:9 slide, so render-check any structural change.
 
 ### Step 3: Generate JSON
 
@@ -193,6 +220,11 @@ Pass via `--theme` flag or `theme` parameter:
 | `am_brown` | Brown |
 | `am_purple` | Purple |
 
+The theme files are bundled in `themes/`. `am_blue.scss` imports `am_template.scss`; the
+other color themes also depend on shared template files, so deploy the whole directory.
+`am_blue_bupt` and `am_template_bupt` are included for BUPT-branded decks and require
+`images/bg.png`.
+
 ---
 
 ## Font Size Modifiers
@@ -212,5 +244,8 @@ Add class to content for size adjustment:
 - [ ] No placeholder text ("xxxx", "lorem")
 - [ ] Lists ≤8 items per page
 - [ ] Math formulas render correctly ($...$)
+- [ ] Raw HTML is enabled and every custom component has balanced tags
+- [ ] `themes/`, `images/`, and `.vscode/settings.json` exist beside the deck
+- [ ] Custom grids/cards fit without overflow in HTML/PDF/PPTX preview
 - [ ] Cover page has correct title/author/date
 - [ ] Last page has contact info

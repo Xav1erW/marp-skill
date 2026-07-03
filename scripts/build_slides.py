@@ -26,9 +26,23 @@ Usage (Builder API):
 
 import argparse
 import re
+import shutil
 import sys
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import List, Optional, Tuple
+
+
+SKILL_ROOT = Path(__file__).resolve().parent.parent
+
+
+def deploy_bundled_assets(output_file: str) -> None:
+    """Copy the bundled Marp themes, images, and VS Code settings beside a deck."""
+    output_dir = Path(output_file).resolve().parent
+    for directory in ("themes", "images", ".vscode"):
+        source = SKILL_ROOT / directory
+        if source.exists():
+            shutil.copytree(source, output_dir / directory, dirs_exist_ok=True)
 
 
 # =============================================================================
@@ -1233,6 +1247,7 @@ def main():
         if args.output:
             with open(args.output, "w", encoding="utf-8") as f:
                 f.write(output)
+            deploy_bundled_assets(args.output)
             print(f"Slides saved to: {args.output}")
         else:
             print(output)
@@ -1245,6 +1260,7 @@ def main():
 
         renderer = JsonPageRenderer(theme=args.theme)
         renderer.render_to_file(pages_data, args.output)
+        deploy_bundled_assets(args.output)
         print(f"Slides saved to: {args.output}")
         return
 
@@ -1332,6 +1348,7 @@ def main():
         if args.output:
             with open(args.output, "w", encoding="utf-8") as f:
                 f.write(output)
+            deploy_bundled_assets(args.output)
             print(f"Slides saved to: {args.output}")
         else:
             print(output)

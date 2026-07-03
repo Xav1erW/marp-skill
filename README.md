@@ -14,7 +14,7 @@ The skill gives an agent a stable workflow:
 Clone this repository into your Codex skills directory:
 
 ```bash
-git clone https://github.com/Xav1erW/bupt-marp-skill.git ~/.codex/skills/marp
+git clone https://github.com/Xav1erW/marp-skill.git ~/.codex/skills/marp
 ```
 
 Then restart Codex so the new skill is loaded.
@@ -46,7 +46,13 @@ python scripts/build_slides.py --pages-file pages.json --output slides.md
 
 - `SKILL.md`: agent-facing skill instructions.
 - `scripts/build_slides.py`: JSON-to-Marp renderer and builder API.
+- `themes/`: bundled Awesome Marp themes, including the enhanced `am_blue` theme.
+- `images/`: logos, cover background, and footer artwork required by the themes.
+- `.vscode/settings.json`: Marp for VS Code theme discovery and HTML support.
 - `references/awesome_marp_readme.md`: Awesome Marp reference material used by the skill.
+
+When an output path is provided, the builder automatically copies `themes/`, `images/`, and
+`.vscode/settings.json` beside the generated deck. Existing files with the same names are updated.
 
 ## Requirements
 
