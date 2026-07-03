@@ -134,13 +134,13 @@ These classes can be placed in a template content field as raw HTML:
 | Component | Purpose | Main classes |
 |-----------|---------|--------------|
 | Content card | General text, figure, dense, system, or summary panel | `content-card` plus `figure-card`, `dense-card`, `system-card`, or `summary-card` |
-| Active-perception comparison | Two concepts connected by a full-width conclusion | `active-perception-grid`, `active-card`, `active-bridge` |
-| VLM overview | Three-stage model pipeline, training phases, and takeaway | `vlm-overview`, `vlm-pipeline`, `vlm-stage`, `vlm-training-grid`, `vlm-overview-note` |
-| Alignment gap | Established methods beside open questions | `alignment-gap`, `alignment-left`, `alignment-right`, `alignment-question`, `alignment-conclusion` |
-| Research-question path | WHERE → WHEN → HOW progression | `ap-question-map`, `ap-question-path`, `ap-question-item`, `ap-question-foot` |
+| Paired comparison | Two concepts connected by a full-width conclusion | `comparison-grid`, `comparison-card`, `comparison-summary` |
+| Process overview | Three-stage process, supporting details, and takeaway | `process-overview`, `process-flow`, `process-step`, `process-detail-grid`, `process-summary` |
+| Gap analysis | Known state beside unresolved gaps | `gap-analysis`, `gap-known`, `gap-open`, `gap-item`, `gap-summary` |
+| Progression path | Three-stage progression | `progression-map`, `progression-path`, `progression-item`, `progression-footer` |
 
 Use these as complete structures copied from a validated deck or assembled with short text.
-Do not rename inner classes: layout depends on exact nesting. Pipeline components are tuned
+Do not rename inner classes: layout depends on exact nesting. Process components are tuned
 for three stages on a 16:9 slide, so render-check any structural change.
 
 ### Step 3: Generate JSON
